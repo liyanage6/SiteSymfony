@@ -1,0 +1,4 @@
+services:
+#    nl_platform.example:
+#        class: NL\PlatformBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
