@@ -1,3 +1,38 @@
-nl_platform_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: NLPlatformBundle:Default:index }
+# src/OC/PlatformBundle/Resources/config/routing.yml
+
+nl_platform_home:
+    path:      /{page}
+    defaults:  { _controller: NLPlatformBundle:Advert:index, page: 1 }
+    requirements:
+        page: \d*
+
+nl_platform_view:
+    path:      /advert/{id}
+    defaults:  { _controller: NLPlatformBundle:Advert:view }
+    requirements:
+        id: \d+
+
+nl_platform_add:
+    path:      /add
+    defaults:  { _controller: NLPlatformBundle:Advert:add }
+
+nl_platform_edit:
+    path:      /edit/{id}
+    defaults:  { _controller: NLPlatformBundle:Advert:edit}
+    requirements:
+        id: \d+
+
+nl_platform_delete:
+    path:      /delete/{id}
+    defaults:  { _controller: NLPlatformBundle:Advert:delete }
+    requirements:
+        id: \d+
+
+# nl_platform_view_slug -> Exemple pour les options (_format - requirements: les regex aussi expressions régulières \d{4})
+nl_platform_view_slug:
+    path:       /advert/{year}/{slug}.{_format}
+    defaults:    { _controller: NLPlatformBundle:Advert:viewSlug, _format: html }
+    requirements:
+        year:   \d{4}
+        _format: html|xml
+# nl_platform_view_slug -> Exemple pour les options (_format - requirements: les regex aussi expressions régulières \d{4})
