@@ -1,0 +1,24 @@
+{% extends "NLPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    Ajouter une annonce - {{ parent() }}
+{% endblock %}
+
+{% block nlplatform_body %}
+
+    <h2>Ajouter une annonce</h2>
+
+    {{ include("NLPlatformBundle:Advert:form.html.twig") }}
+
+    <p>
+        Vous ajoutez une nouvelle annonce, merci d'être clair et précis.
+    </p>
+
+    <p>
+        <a href="{{ path('nl_platform_view', {'id': advert.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Ajouter l'annonce
+        </a>
+    </p>
+
+{% endblock %}

@@ -1,4 +1,3 @@
 services:
-#    nl_platform.example:
-#        class: NL\PlatformBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    nl_platform.antispam:
+        class: NL\PlatformBundle\Antispam\NLAntispam

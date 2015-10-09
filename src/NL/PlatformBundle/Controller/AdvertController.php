@@ -8,9 +8,38 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdvertController extends Controller
 {
+    public function menuAction($limit)
+    {
+    // On fixe en dur une liste ici, bien entendu par la suite
+    // on la récupérera depuis la BDD !
+        /**
+         * A supprimer - Ici pour test
+         */
+        $listAdverts = array(
+            array('id' => 2, 'title' => 'Recherche développeur Symfony2'),
+            array('id' => 5, 'title' => 'Mission de webmaster'),
+            array('id' => 9, 'title' => 'Offre de stage webdesigner')
+        );
+        return $this->render('NLPlatformBundle:Advert:menu.html.twig', array(
+    // Tout l'intérêt est ici : le contrôleur passe
+    // les variables nécessaires au template !
+            'listAdverts' => $listAdverts
+        ));
+    }
     public function editAction($id, Request $request)
     {
         // Ici, on récupérera l'annonce correspondante à $id
+        /**
+         * A supprimer - Ici pour test
+         */
+        $advert = array(
+            'title' => 'Recherche développpeur Symfony2',
+            'id' => $id,
+            'author' => 'Alexandre',
+            'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
+            'date' => new \Datetime()
+        );
+
 
         // Même mécanisme que pour l'ajout
         if ($request->isMethod('POST')) {
@@ -18,7 +47,9 @@ class AdvertController extends Controller
 
             return $this->redirect($this->generateUrl('nl_platform_view', array('id' => 5)));
         }
-        return $this->render('NLPlatformBundle:Advert:edit.html.twig');
+        return $this->render('NLPlatformBundle:Advert:edit.html.twig', array(
+            'advert' => $advert,
+        ));
     }
 
     public function deleteAction($id)
@@ -47,7 +78,19 @@ class AdvertController extends Controller
     public function viewAction($id)
     {
         // Ici, on récupérera l'annonce correspondante à l'id $id
-        return $this->render('NLPlatformBundle:Advert:view.html.twig',array('id' => $id));
+        /**
+         * A supprimer - Ici pour test
+         */
+        $advert = array(
+            'title' => 'Recherche développpeur Symfony2',
+            'id' => $id,
+            'author' => 'Alexandre',
+            'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
+            'date' => new \Datetime()
+        );
+        return $this->render('NLPlatformBundle:Advert:view.html.twig',array(
+            'advert' => $advert
+        ));
     }
     public function indexAction($page)
     {
@@ -57,6 +100,31 @@ class AdvertController extends Controller
         }
         // Ici, on récupérera la liste des annonces, puis on la passera au template
         // Mais pour l'instant, on ne fait qu'appeler le template
-        return $this->render('NLPlatformBundle:Advert:index.html.twig');
+        /**
+         * A supprimer - Ici pour test
+         */
+        $listAdverts = array(
+            array(
+                'title' => 'Recherche développpeur Symfony2',
+                'id' => 1,
+                'author' => 'Alexandre',
+                'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
+                'date' => new \Datetime()),
+            array(
+                'title' => 'Mission de webmaster',
+                'id' => 2,
+                'author' => 'Hugo',
+                'content' => 'Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…',
+                'date' => new \Datetime()),
+            array(
+                'title' => 'Offre de stage webdesigner',
+                'id' => 3,
+                'author' => 'Mathieu',
+                'content' => 'Nous proposons un poste pour webdesigner. Blabla…',
+                'date' => new \Datetime())
+        );
+        return $this->render('NLPlatformBundle:Advert:index.html.twig', array(
+            'listAdvert' => $listAdverts
+        ));
     }
 }
