@@ -3,6 +3,7 @@
 namespace NL\PlatformBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -61,6 +62,18 @@ class AdvertController extends Controller
     }
     public function addAction(Request $request)
     {
+        /**
+         * Test d'un service
+         */
+        $antispam = $this->container->get('nl_platform.antispam');
+        $text = "text de moins de 50 caractères";
+        if ($antispam->isSpam($text)){
+            throw new \Exception('Votre message est un spam');
+        }
+        /**
+         * Fin de test d'un service
+         */
+
         // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
         // Si la requête est en POST, c'est que le visiteur a soumis le formulaire
         if ($request->isMethod('POST')) {

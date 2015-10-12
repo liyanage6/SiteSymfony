@@ -1,10 +1,20 @@
 <?php
-// src/OC/PlatformBundle/Antispam/OCAntispam.php
+// src/NL/PlatformBundle/Antispam/NLAntispam.php
 
-namespace OC\PlatformBundle\Antispam;
+namespace NL\PlatformBundle\Antispam;
 
-class OCAntispam
+class NLAntispam
 {
+    private $mailer;
+    private $locale;
+    private $minLength;
+
+    public function _construct($mailer, $locale, $minLength)
+    {
+        $this->mailer = $mailer;
+        $this->locale = $locale;
+        $this->minLength = $minLength;
+    }
     /**
      * Vérifie si le texte est un spam ou non
      *
@@ -13,6 +23,6 @@ class OCAntispam
      */
     public function isSpam($text)
     {
-        return strlen($text) < 50;
+        return strlen($text) < $this->minLength;
     }
 }

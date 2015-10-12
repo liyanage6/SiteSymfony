@@ -1,3 +1,4 @@
 services:
     nl_platform.antispam:
         class: NL\PlatformBundle\Antispam\NLAntispam
+        arguments: [@mailer, %locale%, 50]
