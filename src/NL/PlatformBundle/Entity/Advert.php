@@ -60,7 +60,7 @@ class Advert
         return $this->id;
     }
 
-    public function _construct()
+    public function __construct()
     {
         // Par default, la date de l'annonce est la date d'aujourd'hui
         $this->date = new \DateTime();

@@ -2,6 +2,7 @@
 
 namespace NL\PlatformBundle\Controller;
 
+use NL\PlatformBundle\Entity\Advert;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,27 +63,29 @@ class AdvertController extends Controller
     }
     public function addAction(Request $request)
     {
-        /**
-         * Test d'un service
-         */
-        $antispam = $this->container->get('nl_platform.antispam');
-        $text = "text de moins de 50 caractères";
-        if ($antispam->isSpam($text)){
-            throw new \Exception('Votre message est un spam');
-        }
-        /**
-         * Fin de test d'un service
-         */
+        // Creation de l'entité
+        $advert = new Advert();
+        $advert->setTitle('Recherche développeur Symfony2.');
+        $advert->setAuthor('Nicholas');
+        $advert->setContent('Nous recherchons un dev Symfony 2 sur Panama blablabla ...');
+        // On peut ne pas définir ni la date ni la publication, car cest attributs sont définis automatiquement dans le constructeur
+
+        // On récupère l'EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        // Etape 1 : On "persiste" l'entité
+        $em->persist($advert);
+
+        // Etape 2 : On "flush" tout ce qui a été persisté avant
+        $em->flush();
 
         // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
         // Si la requête est en POST, c'est que le visiteur a soumis le formulaire
         if ($request->isMethod('POST')) {
             // Ici, on s'occupera de la création et de la gestion du formulaire
-
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-
             // Puis on redirige vers la page de visualisation de cettte annonce
-            return $this->redirect($this->generateUrl('nl_platform_view', array('id' => 5)));
+            return $this->redirect($this->generateUrl('nl_platform_view', array('id' => $advert->getId())));
         }
 
         // Si on n'est pas en POST, alors on affiche le formulaire
@@ -90,6 +93,12 @@ class AdvertController extends Controller
     }
     public function viewAction($id)
     {
+        $advert = $this->getDoctrine()->getManager()->find('NLPlatformBundle:Advert',$id);
+        // $advert est donc une instance de OC\PlatformBundle\Entity\Advert
+        // ou null si l'id $id n'existe pas, d'où ce if :
+        if (null === $advert) {
+            throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
+        }
         // Ici, on récupérera l'annonce correspondante à l'id $id
         /**
          * A supprimer - Ici pour test
