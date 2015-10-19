@@ -2,7 +2,9 @@
 
 namespace NL\PlatformBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use NL\PlatformBundle\Entity\Category;
 
 /**
  * Advert
@@ -12,6 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Advert
 {
+    /**
+     * @ORM\ManyToMany(targetEntity="NL\PlatformBundle\Entity\Category", cascade={"persist"})
+     */
+    private $categories;
+
     /**
      * @ORM\OneToOne(targetEntity="NL\PlatformBundle\Entity\Image", cascade={"persist"})
      */
@@ -54,6 +61,29 @@ class Advert
      */
     private $content;
 
+    /**
+     * Set image
+     *
+     * @param \NL\PlatformBundle\Entity\Image $image
+     *
+     * @return Advert
+     */
+    public function setImage(Image $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \NL\PlatformBundle\Entity\Image
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
 
     /**
      * Get id
@@ -64,12 +94,14 @@ class Advert
     {
         return $this->id;
     }
-
     public function __construct()
     {
         // Par default, la date de l'annonce est la date d'aujourd'hui
+        // Comme la propriété $categories doit être un ArrayCollection, on doit la définir dans un constructeur :
         $this->date = new \DateTime();
+        $this->categories = new ArrayCollection();
     }
+
     /**
      * Set date
      *
@@ -155,7 +187,6 @@ class Advert
 
         return $this;
     }
-
     /**
      * Get content
      *
@@ -165,5 +196,38 @@ class Advert
     {
         return $this->content;
     }
-}
 
+    /**
+     * Add category
+     *
+     * @param Category $category
+     *
+     * @return Advert
+     */
+    public function addCategory(Category $category)
+    {
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param Category $category
+     */
+    public function removeCategory(Category $category)
+    {
+        $this->categories->removeElement($category);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+}
