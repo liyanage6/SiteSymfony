@@ -4,7 +4,6 @@ namespace NL\PlatformBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use NL\PlatformBundle\Entity\Category;
 
 /**
  * Advert
@@ -14,6 +13,10 @@ use NL\PlatformBundle\Entity\Category;
  */
 class Advert
 {
+    /**
+     * @ORM\OneToMany(targetEntity="NL\PlatformBundle\Entity\Application", mappedBy="advert")
+     */
+    private $applications;
     /**
      * @ORM\ManyToMany(targetEntity="NL\PlatformBundle\Entity\Category", cascade={"persist"})
      */
@@ -61,6 +64,15 @@ class Advert
      */
     private $content;
 
+    public function __construct()
+    {
+        // Par default, la date de l'annonce est la date d'aujourd'hui
+        // Comme la propriété $categories doit être un ArrayCollection, on doit la définir dans un constructeur :
+        $this->date = new \DateTime();
+        $this->categories = new ArrayCollection();
+        $this->applications = new ArrayCollection();
+    }
+
     /**
      * Set image
      *
@@ -84,7 +96,6 @@ class Advert
     {
         return $this->image;
     }
-
     /**
      * Get id
      *
@@ -93,13 +104,6 @@ class Advert
     public function getId()
     {
         return $this->id;
-    }
-    public function __construct()
-    {
-        // Par default, la date de l'annonce est la date d'aujourd'hui
-        // Comme la propriété $categories doit être un ArrayCollection, on doit la définir dans un constructeur :
-        $this->date = new \DateTime();
-        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -229,5 +233,45 @@ class Advert
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Add application
+     *
+     * @param Application $application
+     *
+     * @return Advert
+     */
+    public function addApplication(Application $application)
+    {
+        $this->applications[] = $application;
+
+        // On lie l'annonce à la candidature
+        $application->setAdvert($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove application
+     *
+     * @param Application $application
+     */
+    public function removeApplication(Application $application)
+    {
+        $this->applications->removeElement($application);
+
+        // Et si notre relation était facultative (nullable=true, ce qui n'est pas notre cas ici attention) :
+        // $application->setAdvert(null);
+    }
+
+    /**
+     * Get applications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getApplications()
+    {
+        return $this->applications;
     }
 }
