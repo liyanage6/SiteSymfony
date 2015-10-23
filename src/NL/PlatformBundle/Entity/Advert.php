@@ -30,6 +30,11 @@ class Advert
     private $image;
 
     /**
+     * @ORM\Column(name="nb_applications", type="integer")
+     */
+    private $nbApplications = 0;
+
+    /**
      * @var
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
@@ -82,6 +87,15 @@ class Advert
         $this->applications = new ArrayCollection();
     }
 
+    public function increaseApplication()
+    {
+        $this->nbApplications++;
+    }
+
+    public function decreaseApplication()
+    {
+        $this->nbApplications--;
+    }
     /**
      * @ORM\PreUpdate
      */

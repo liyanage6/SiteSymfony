@@ -121,6 +121,15 @@ class AdvertController extends Controller
         // On récupère l'EntityManager
         $em = $this->getDoctrine()->getManager();
 
+        // Test pour mettre a jour une annonce (updateDate) - OK
+        $em->getRepository("NLPlatformBundle:Advert")
+            ->find(18)
+            ->updateDate()
+        ;
+        $em->getRepository("NLPlatformBundle:Advert")
+            ->find(19)
+            ->updateDate()
+        ;
         // On récupère toutes les compétences possibles
         $listSkills = $em->getRepository('NLPlatformBundle:Skill')->findAll();
         // Pour chaque compétence
