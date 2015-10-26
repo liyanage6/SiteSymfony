@@ -2,3 +2,9 @@ services:
     nl_platform.antispam:
         class: NL\PlatformBundle\Antispam\NLAntispam
         arguments: [@mailer, %locale%, 50]
+
+    nl_platform.doctrine.notification:
+        class: NL\PlatformBundle\DoctrineListener\ApplicationNotification
+        arguments: [@mailer]
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
