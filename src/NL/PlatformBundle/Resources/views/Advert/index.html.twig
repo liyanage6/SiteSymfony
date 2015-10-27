@@ -13,6 +13,7 @@
     <ul>
         {% for advert in listAdvert %}
             <li>
+                <img src="{{ advert.image.url }}" width="400px" height="150px"><br>
                 <a href="{{ path('nl_platform_view', {'id': advert.id}) }}">
                     {{ advert.title }}
                 </a>
