@@ -1,7 +1,7 @@
 {# src/OC/PlatformBundle/Resources/views/Advert/menu.html.twig #}
 
 <ul class="nav nav-pills nav-stacked">
-    {% for advert in listAdverts %}
+    {% for advert in allAdvert %}
         <li>
             <a href="{{ path('nl_platform_view', {'id': advert.id}) }}">
                 {{ advert.title }}

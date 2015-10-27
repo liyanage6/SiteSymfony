@@ -54,13 +54,13 @@ class Advert
 
     /**
      * @var boolean
-     * 
+     *
      * @ORM\Column(name="published", type="boolean")
      */
     private $published = true;
 
     /**
-     * @ORM\OneToOne(targetEntity="NL\PlatformBundle\Entity\Image", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="NL\PlatformBundle\Entity\Image", cascade={"persist","remove"})
      */
     private $image;
 
