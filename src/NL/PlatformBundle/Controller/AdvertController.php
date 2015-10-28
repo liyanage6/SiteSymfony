@@ -77,20 +77,31 @@ class AdvertController extends Controller
 
     public function addAction(Request $request)
     {
-        // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
-        // Si la requête est en POST, c'est que le visiteur a soumis le formulaire
+        // On créer un objet Advert
+        $advert = new Advert();
 
-        if ($request->isMethod('POST')) {
-            // Ici, on s'occupera de la création et de la gestion du formulaire
+        // On créer le FormBuilder grace au service form factory
+        $formBuilder = $this->get('form.factory')->createBuilder('form', $advert);
 
-            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+        // On ajoute les champs de l'entité que l'on veut à notre formulaire
+        $formBuilder
+            ->add('date',       'date')
+            ->add('title',      'text')
+            ->add('content',    'textarea')
+            ->add('author',     'text')
+            ->add('published',  'checkbox')
+            ->add('save',       'submit')
+        ;
+        // Pour l'instant, pas de candidatures, catégories, etc., on les gérera plus tard
 
-            // Puis on redirige vers la page de visualisation de cettte annonce
-            return $this->redirect($this->generateUrl('nl_platform_view', array('id' => 1)));
-        }
+        //A partir du formBuilder, on génère le formulaire
+        $form = $formBuilder->getForm();
 
-        // Si on n'est pas en POST, alors on affiche le formulaire
-        return $this->render('NLPlatformBundle:Advert:add.html.twig');
+        // On passe la méthode createView() du formulaire à la vue
+        // afin qu'elle puisse afficher le formulaire toute seule
+        return $this->render('NLPlatformBundle:Advert:add.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 
     public function viewAction($id)
@@ -121,19 +132,36 @@ class AdvertController extends Controller
     {
         if($page<1)
         {
-            throw new NotFoundHttpException('Page '.$page.' inexistante.');
+            throw $this->createNotFoundException('Page '.$page.' inexistante.');
         }
 
-        // Pour récupérer la liste de toutes les annonces : on utilise findAll()
+        // On peut fixe le nombre d'annonces par page à 2
+        // Mais bien sur il faudrait utiliser un paramètre, et y accéder via
+        // $this->container->getParameter('nb_per_page')
+        $nbPerPage = $this->container->getParameter('nb_per_page');
+
+        // On récupére notre Paginator
         $allAdvert = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository('NLPlatformBundle:Advert')
-            ->getAdverts()
+            ->getAdverts($page, $nbPerPage)
         ;
 
+        // On calcule le nbr total de pages grace au count($allAdverts) qui retourne le nombre total d'annonces
+        //ceil() arrondi au chiffre supèrieur
+        $nbPages = ceil(count($allAdvert)/$nbPerPage);
+
+        // Si la page n'existe pas, on retourne une 404
+        if ($page > $nbPages) {
+            throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        }
+
+        // On donne toutes les informations nécessaires à la vue
         return $this->render('NLPlatformBundle:Advert:index.html.twig', array(
-            'listAdvert' => $allAdvert
+            'listAdvert' => $allAdvert,
+            'nbPages' => $nbPages,
+            'page' => $page
         ));
     }
 }

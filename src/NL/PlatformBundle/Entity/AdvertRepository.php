@@ -3,6 +3,7 @@
 namespace NL\PlatformBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * AdvertRepository
@@ -30,7 +31,7 @@ class AdvertRepository extends EntityRepository
     }
 
 
-    public function getAdverts()
+    public function getAdverts($page, $nbPerPage)
     {
         $qb = $this->createQueryBuilder('a')
             ->leftJoin('a.categories','c') // Jointure sur l'attribut categories
@@ -41,6 +42,15 @@ class AdvertRepository extends EntityRepository
             ->getQuery()
         ;
 
-        return $qb->getResult();
+        $qb
+            // On définit l'anonce a partir de laquelle commencer la liste
+            ->setFirstResult(($page-1) * $nbPerPage)
+            // Ainsi que le nombre d'annonce par page
+            ->setMaxResults($nbPerPage)
+        ;
+
+        // Enfin, on retourne l'objet Paginator correspondant à la requête construite
+        // (n'oubliez pas le use correspondant en début de fichier)
+        return new Paginator($qb, true);
     }
 }

@@ -1,3 +1,6 @@
+parameters:
+    nb_per_page: 2
+
 services:
     nl_platform.antispam:
         class: NL\PlatformBundle\Antispam\NLAntispam
