@@ -44,9 +44,44 @@ class AdvertController extends Controller
         }
 
         // Ici, on s'occupera de la création et de la gestion du formulaire
+        $formBuilder = $this->get('form.factory')->createBuilder('form', $advert);
+
+        // On ajoute les champs de l'entité que l'on veut à notre formulaire
+        $formBuilder
+            ->add('date',       'date')
+            ->add('title',      'text')
+            ->add('content',    'textarea')
+            ->add('author',     'text')
+            ->add('published',  'checkbox', array(
+                'required' => false
+            ))
+            ->add('save',       'submit')
+        ;
+
+        $form = $formBuilder->getForm();
+
+        // On fait le lien Requete <-> Formulaire
+        // A partir de maintenant, la valeur $advert contient les valeurs entrées dans le formulaire par le visiteur
+        $form->handleRequest($request);
+
+        // On vérifie que les valeurs entrées sont correctes
+        // (Nous verrons la validation des objets en détail dans le prochain chapitre)
+        if ($form->isValid())
+            // On enregistre notre objet $advert dans la BDD, par exemple
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($advert);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+
+            // On redirige vers la page de visualisation de l'annonce nouvellement créer
+            return $this->redirect($this->generateUrl('nl_platform_view', array('id' => $advert->getId())));
+        }
 
         return $this->render('NLPlatformBundle:Advert:edit.html.twig', array(
             'advert' => $advert,
+            'form' => $form->createView(),
         ));
     }
 
@@ -80,6 +115,10 @@ class AdvertController extends Controller
         // On créer un objet Advert
         $advert = new Advert();
 
+        // Ici, on préremplit avec la date d'aujourd'hui, par exemple
+        // Cette date sera donc préaffichée dans le formulaire, cela facilite le travail de l'utilisateur
+        $advert->setDate(new \Datetime());
+
         // On créer le FormBuilder grace au service form factory
         $formBuilder = $this->get('form.factory')->createBuilder('form', $advert);
 
@@ -89,7 +128,9 @@ class AdvertController extends Controller
             ->add('title',      'text')
             ->add('content',    'textarea')
             ->add('author',     'text')
-            ->add('published',  'checkbox')
+            ->add('published',  'checkbox', array(
+                'required' => false
+            ))
             ->add('save',       'submit')
         ;
         // Pour l'instant, pas de candidatures, catégories, etc., on les gérera plus tard
