@@ -6,6 +6,7 @@ use NL\PlatformBundle\Entity\Advert;
 use NL\PlatformBundle\Entity\AdvertSkill;
 use NL\PlatformBundle\Entity\Application;
 use NL\PlatformBundle\Entity\Image;
+use NL\PlatformBundle\Form\AdvertType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -120,31 +121,9 @@ class AdvertController extends Controller
         $advert->setDate(new \Datetime());
 
         // On créer le FormBuilder grace au service form factory
-        $formBuilder = $this->get('form.factory')->createBuilder('form', $advert);
+        $form = $this->createForm(new AdvertType(), $advert);
 
-        // On ajoute les champs de l'entité que l'on veut à notre formulaire
-        $formBuilder
-            ->add('date',       'date')
-            ->add('title',      'text')
-            ->add('content',    'textarea')
-            ->add('author',     'text')
-            ->add('published',  'checkbox', array(
-                'required' => false
-            ))
-            ->add('save',       'submit')
-        ;
-        // Pour l'instant, pas de candidatures, catégories, etc., on les gérera plus tard
-
-        //A partir du formBuilder, on génère le formulaire
-        $form = $formBuilder->getForm();
-
-        // On fait le lien Requete <-> Formulaire
-        // A partir de maintenant, la valeur $advert contient les valeurs entrées dans le formulaire par le visiteur
-        $form->handleRequest($request);
-
-        // On vérifie que les valeurs entrées sont correctes
-        // (Nous verrons la validation des objets en détail dans le prochain chapitre)
-        if ($form->isValid())
+        if ($form->handleRequest($request)->isValid())
             // On enregistre notre objet $advert dans la BDD, par exemple
         {
             $em = $this->getDoctrine()->getManager();
@@ -156,10 +135,6 @@ class AdvertController extends Controller
             // On redirige vers la page de visualisation de l'annonce nouvellement créer
             return $this->redirect($this->generateUrl('nl_platform_view', array('id' => $advert->getId())));
         }
-
-// À ce stade, le formulaire n'est pas valide car :
-// - Soit la requête est de type GET, donc le visiteur vient d'arriver sur la page et veut voir le formulaire
-// - Soit la requête est de type POST, mais le formulaire contient des valeurs invalides, donc on l'affiche de nouveau
 
         // On passe la méthode createView() du formulaire à la vue
         // afin qu'elle puisse afficher le formulaire toute seule

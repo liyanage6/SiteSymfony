@@ -49,6 +49,7 @@
     {% if not advert.categories.empty %}
         <p>
             Cette annonce est parue dans les catégories suivantes :
+            {#{{ dump(advert.categories) }}#}
             {% for category in advert.categories %}
                 {{ category.name }}{% if not loop.last %}, {% endif %}
             {% endfor %}
