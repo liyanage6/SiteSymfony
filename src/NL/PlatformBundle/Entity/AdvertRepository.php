@@ -31,7 +31,7 @@ class AdvertRepository extends EntityRepository
     }
 
 
-    public function getAdverts($page, $nbPerPage)
+    public function getAdverts()
     {
         $qb = $this->createQueryBuilder('a')
             ->leftJoin('a.categories','c') // Jointure sur l'attribut categories
@@ -42,15 +42,10 @@ class AdvertRepository extends EntityRepository
             ->getQuery()
         ;
 
-        $qb
-            // On définit l'anonce a partir de laquelle commencer la liste
-            ->setFirstResult(($page-1) * $nbPerPage)
-            // Ainsi que le nombre d'annonce par page
-            ->setMaxResults($nbPerPage)
-        ;
+        $result = $qb->getResult();
 
         // Enfin, on retourne l'objet Paginator correspondant à la requête construite
         // (n'oubliez pas le use correspondant en début de fichier)
-        return new Paginator($qb, true);
+        return $result;
     }
 }

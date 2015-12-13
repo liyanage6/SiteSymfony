@@ -167,40 +167,20 @@ class AdvertController extends Controller
             'listAdvertSkills' => $listAdvertSkills
         ));
     }
-    public function indexAction($page)
+    public function indexAction()
     {
-        if($page<1)
-        {
-            throw $this->createNotFoundException('Page '.$page.' inexistante.');
-        }
-
-        // On peut fixe le nombre d'annonces par page à 2
-        // Mais bien sur il faudrait utiliser un paramètre, et y accéder via
-        // $this->container->getParameter('nb_per_page')
-        $nbPerPage = $this->container->getParameter('nb_per_page');
 
         // On récupére notre Paginator
         $allAdvert = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository('NLPlatformBundle:Advert')
-            ->getAdverts($page, $nbPerPage)
+            ->getAdverts()
         ;
-
-        // On calcule le nbr total de pages grace au count($allAdverts) qui retourne le nombre total d'annonces
-        //ceil() arrondi au chiffre supèrieur
-        $nbPages = ceil(count($allAdvert)/$nbPerPage);
-
-        // Si la page n'existe pas, on retourne une 404
-        if ($page > $nbPages) {
-            throw $this->createNotFoundException("La page ".$page." n'existe pas.");
-        }
 
         // On donne toutes les informations nécessaires à la vue
         return $this->render('NLPlatformBundle:Advert:index.html.twig', array(
             'listAdvert' => $allAdvert,
-            'nbPages' => $nbPages,
-            'page' => $page
         ));
     }
 }

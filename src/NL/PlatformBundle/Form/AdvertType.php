@@ -24,7 +24,8 @@ class AdvertType extends AbstractType
             ->add('categories', 'entity', array(
                 'class'     => 'NL\PlatformBundle\Entity\Category',
                 'property'  => 'name',
-                'multiple'  => true
+                'multiple'  => false,
+                'expanded' => false
             ))
             ->add('save',       'submit')
         ;
