@@ -15,7 +15,9 @@
             <li>
                 <a href="{{ path('nl_platform_view', {'id': advert.id}) }}">
                     {{ advert.title }}
-                    <br><img src="{{ advert.image.url }}" width="120px" height="150px"><br>
+                    {% if advert.image is defined %}
+                        <br><img src="{{ advert.image.url }}" width="120px" height="150px"><br>
+                    {% endif %}    
                 </a>
                 par {{ advert.author }},
                 le {{ advert.date|date('d/m/Y') }}

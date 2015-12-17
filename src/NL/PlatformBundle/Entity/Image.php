@@ -3,6 +3,7 @@
 namespace NL\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Image
@@ -34,6 +35,8 @@ class Image
      * @ORM\Column(name="alt", type="string", length=255)
      */
     private $alt;
+
+    private $file;
 
 
     /**
@@ -92,6 +95,18 @@ class Image
     public function getAlt()
     {
         return $this->alt;
+    }
+
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
     }
 }
 

@@ -36,16 +36,18 @@
         </div>
 
     </div>
+
     <div class="form-group">
 
         {{ form_label(form.date, "Date", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
         {{ form_errors(form.title) }}
 
         <div class="col-sm-4">
-            {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.date) }}
         </div>
 
     </div>
+
     <div class="form-group">
 
         {{ form_label(form.author, "Publié par", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
@@ -68,22 +70,22 @@
     </div>
     <div class="form-group">
 
-        {{ form_label(form.image.url, "Image - Url", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+        {{ form_label(form.image.file, "Image", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
         {{ form_errors(form.title) }}
 
         <div class="col-sm-4">
-            {{ form_widget(form.image.url, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.image.file) }}
         </div>
 
     </div>
-    <div class="form-group">
-        {{ form_label(form.image.alt, "Image - Alt", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-        {{ form_errors(form.title) }}
+    {#<div class="form-group">#}
+        {#{{ form_label(form.image.alt, "Image - Alt", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}#}
+        {#{{ form_errors(form.title) }}#}
 
-        <div class="col-sm-4">
-            {{ form_widget(form.image.alt, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
+        {#<div class="col-sm-4">#}
+            {#{{ form_widget(form.image.alt, {'attr': {'class': 'form-control'}}) }}#}
+        {#</div>#}
+    {#</div>#}
     <div class="form-group">
         {{ form_label(form.categories, "Categories", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
         {{ form_errors(form.title) }}

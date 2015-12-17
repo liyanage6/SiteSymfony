@@ -280,6 +280,21 @@ class Advert
     }
 
     /**
+     * Set categories
+     * @param \Doctrine\Common\Collections\Collection $categories
+     * @return $this
+     */
+    public function setCategories($categories)
+    {
+        if(!is_array($categories)) {
+            $categories = array($categories);
+        }
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+    /**
      * Add application
      *
      * @param Application $application

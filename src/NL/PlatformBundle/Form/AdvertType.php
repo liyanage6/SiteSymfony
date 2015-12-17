@@ -4,6 +4,8 @@ namespace NL\PlatformBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AdvertType extends AbstractType
@@ -19,7 +21,6 @@ class AdvertType extends AbstractType
             ->add('title',      'text')
             ->add('author',     'text')
             ->add('content',    'textarea')
-            ->add('published',  'checkbox', array('required' => false))
             ->add('image',      new ImageType())
             ->add('categories', 'entity', array(
                 'class'     => 'NL\PlatformBundle\Entity\Category',
@@ -29,6 +30,23 @@ class AdvertType extends AbstractType
             ))
             ->add('save',       'submit')
         ;
+
+        $builder->addEventListener(
+            FormEvents::POST_SET_DATA,
+            function(FormEvent $event) {
+                $advert = $event->getData();
+
+                if (null === $advert) {
+                    return;
+                }
+
+                if (!$advert->getPublished() || null === $advert->getId()) {
+                    $event->getForm()->add('published', 'checkbox', array('required' => false));
+                } else {
+                    $event->getForm()->remove('published');
+                }
+            }
+        );
     }
     
     /**

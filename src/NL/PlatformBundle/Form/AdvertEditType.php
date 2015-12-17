@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ImageType extends AbstractType
+class AdvertEditType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -14,19 +14,7 @@ class ImageType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('file', 'file')
-        ;
-    }
-    
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'NL\PlatformBundle\Entity\Image'
-        ));
+        $builder->remove('date');
     }
 
     /**
@@ -34,6 +22,11 @@ class ImageType extends AbstractType
      */
     public function getName()
     {
-        return 'nl_platformbundle_image';
+        return 'nl_platformbundle_advert_edit';
+    }
+
+    public function getParent()
+    {
+        return new AdvertType();
     }
 }

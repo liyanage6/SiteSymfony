@@ -6,6 +6,7 @@ use NL\PlatformBundle\Entity\Advert;
 use NL\PlatformBundle\Entity\AdvertSkill;
 use NL\PlatformBundle\Entity\Application;
 use NL\PlatformBundle\Entity\Image;
+use NL\PlatformBundle\Form\AdvertEditType;
 use NL\PlatformBundle\Form\AdvertType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,29 +46,9 @@ class AdvertController extends Controller
         }
 
         // Ici, on s'occupera de la création et de la gestion du formulaire
-        $formBuilder = $this->get('form.factory')->createBuilder('form', $advert);
+        $form = $this->createForm(new AdvertEditType(), $advert);
 
-        // On ajoute les champs de l'entité que l'on veut à notre formulaire
-        $formBuilder
-            ->add('date',       'date')
-            ->add('title',      'text')
-            ->add('content',    'textarea')
-            ->add('author',     'text')
-            ->add('published',  'checkbox', array(
-                'required' => false
-            ))
-            ->add('save',       'submit')
-        ;
-
-        $form = $formBuilder->getForm();
-
-        // On fait le lien Requete <-> Formulaire
-        // A partir de maintenant, la valeur $advert contient les valeurs entrées dans le formulaire par le visiteur
-        $form->handleRequest($request);
-
-        // On vérifie que les valeurs entrées sont correctes
-        // (Nous verrons la validation des objets en détail dans le prochain chapitre)
-        if ($form->isValid())
+        if ($form->handleRequest($request)->isValid())
             // On enregistre notre objet $advert dans la BDD, par exemple
         {
             $em = $this->getDoctrine()->getManager();
