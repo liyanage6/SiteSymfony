@@ -34,7 +34,6 @@ class AdvertController extends Controller
     }
     public function editAction($id, Request $request)
     {
-        // On récupère l'EntityManager
         $em = $this->getDoctrine()->getManager();
 
         // On récupère l'entité correspondant à l'id $id
@@ -45,7 +44,6 @@ class AdvertController extends Controller
             throw $this->createNotFoundException("L'anonce d'id ".$id." n'existe pas.");
         }
 
-        // Ici, on s'occupera de la création et de la gestion du formulaire
         $form = $this->createForm(new AdvertEditType(), $advert);
 
         if ($form->handleRequest($request)->isValid())
@@ -77,8 +75,10 @@ class AdvertController extends Controller
             throw $this->createNotFoundException("L'anonce d'id ".$id." n'existe pas.");
         }
 
-        if($request->isMethod('POST')) {
-            // Si la requête est en POST, on delete l'article
+        $form = $this->createFormBuilder()->getForm();
+        if($form->handleRequest($request)->isValid()) {
+            $em->remove($advert);
+            $em->flush();
 
             $request->getSession()->getFlashBag()->add('info', 'Annonce bien supprimée.');
 
@@ -88,26 +88,23 @@ class AdvertController extends Controller
 
         // Si la requete est en GET, on affiche une page de confirmation avant de delete
         return $this->render('NLPlatformBundle:Advert:delete.html.twig', array(
-            'advert' => $advert
+            'advert' => $advert,
+            'form' => $form->createView(),
         ));
     }
 
     public function addAction(Request $request)
     {
-        // On créer un objet Advert
         $advert = new Advert();
 
-        // Ici, on préremplit avec la date d'aujourd'hui, par exemple
-        // Cette date sera donc préaffichée dans le formulaire, cela facilite le travail de l'utilisateur
         $advert->setDate(new \Datetime());
 
-        // On créer le FormBuilder grace au service form factory
         $form = $this->createForm(new AdvertType(), $advert);
 
         if ($form->handleRequest($request)->isValid())
-            // On enregistre notre objet $advert dans la BDD, par exemple
         {
             $em = $this->getDoctrine()->getManager();
+
             $em->persist($advert);
             $em->flush();
 

@@ -1,0 +1,35 @@
+
+{% extends "NLPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    Supprimer une annonce- {{ parent() }}
+{% endblock %}
+
+{% block nlplatform_body %}
+    <h2>{{ advert.title }}</h2>
+
+    <p>
+        {% if advert.image is not null %}
+            <img src="{{ advert.image.url }}"
+                 alt="{{ advert.image.alt }}">
+        {% endif %}
+    </p>
+
+    <br>
+
+    <p>
+        Etes vous sur de vouloir supprimer l'annonce "{{ advert.title }}" ?
+    </p>
+
+    <form action="{{ path('nl_platform_delete', {'id': advert.id}) }}" method="post">
+        <a href="{{ path('nl_platform_view', {'id': advert.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour à l'annonce
+        </a>
+
+        <input type="submit" value="Supprimer" class="btn btn-danger" />
+
+        {{ form_rest(form) }}
+    </form>
+{% endblock %}
+

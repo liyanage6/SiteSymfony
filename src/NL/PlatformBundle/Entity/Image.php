@@ -102,7 +102,7 @@ class Image
         return $this->alt;
     }
 
-    public function setFile(UploadedFile $file)
+    public function setFile(UploadedFile $file = null)
     {
         $this->file = $file;
 
