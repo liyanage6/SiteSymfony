@@ -27,12 +27,3 @@ nl_platform_delete:
     defaults:  { _controller: NLPlatformBundle:Advert:delete }
     requirements:
         id: \d+
-
-# nl_platform_view_slug -> Exemple pour les options (_format - requirements: les regex aussi expressions régulières \d{4})
-nl_platform_view_slug:
-    path:       /advert/{year}/{slug}.{_format}
-    defaults:    { _controller: NLPlatformBundle:Advert:viewSlug, _format: html }
-    requirements:
-        year:   \d{4}
-        _format: html|xml
-# nl_platform_view_slug -> Exemple pour les options (_format - requirements: les regex aussi expressions régulières \d{4})
