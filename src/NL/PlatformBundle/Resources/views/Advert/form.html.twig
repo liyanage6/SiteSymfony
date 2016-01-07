@@ -37,6 +37,7 @@
 
     </div>
 
+    {% if date is defined%}
     <div class="form-group">
         {{ form_label(form.date, "Date", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
         {{ form_errors(form.title) }}
@@ -45,6 +46,7 @@
             {{ form_widget(form.date) }}
         </div>
     </div>
+    {% endif %}
 
     <div class="form-group">
         {{ form_label(form.author, "Publié par", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
@@ -55,7 +57,7 @@
         </div>
     </div>
 
-
+    {% if published is defined%}
     <div class="form-group">
         {{ form_label(form.published, "Publié", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
         {{ form_errors(form.title) }}
@@ -64,6 +66,7 @@
             {{ form_widget(form.published, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
+    {% endif %}
 
     <div class="form-group">
 

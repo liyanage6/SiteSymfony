@@ -16,7 +16,7 @@
                 <a href="{{ path('nl_platform_view', {'id': advert.id}) }}">
                     {{ advert.title }}
                     {% if advert.image is defined %}
-                        <br><img src="{{ advert.image.url }}" width="120px" height="150px"><br>
+                        <br><img src="{{ asset(advert.image.webPath) }}" alt="{{ advert.image.alt }}" width=120px height=150px><br>
                     {% endif %}    
                 </a>
                 par {{ advert.author }},
