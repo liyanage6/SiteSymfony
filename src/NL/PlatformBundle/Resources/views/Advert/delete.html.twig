@@ -10,7 +10,7 @@
 
     <p>
         {% if advert.image is not null %}
-            <img src="{{ advert.image.url }}"
+            <img src="{{ asset(advert.image.webPath) }}"
                  alt="{{ advert.image.alt }}">
         {% endif %}
     </p>

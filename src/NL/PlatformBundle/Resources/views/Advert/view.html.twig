@@ -8,8 +8,6 @@
 
 {% block nlplatform_body %}
 
-    {# On vérifie qu'une image soit bien associée à l'annonce !!
-    TODO: NE FONCTIONNE PAS !! #}
     {% if advert.image is not null %}
         <img src="{{ asset(advert.image.webPath) }}" alt="{{ advert.image.alt }}">
     {% endif %}

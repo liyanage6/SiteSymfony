@@ -16,8 +16,15 @@ class AdvertType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // TODO: AMELIORE
+//        $advert = $builder->getData();
+//        dump($advert);die;
+//        if ( null === $advert->getId() ) {
+//            $builder->add('date',       'date');
+//        }
+
         $builder
-            ->add('date',       'date')
+            ->add('date',       'date') // A retier si methode au dessus est fonctionnelle
             ->add('title',      'text')
             ->add('author',     'text')
             ->add('content',    'textarea')
@@ -25,7 +32,7 @@ class AdvertType extends AbstractType
             ->add('categories', 'entity', array(
                 'class'     => 'NL\PlatformBundle\Entity\Category',
                 'property'  => 'name',
-                'multiple'  => false,
+                'multiple'  => true,
                 'expanded' => false
             ))
             ->add('save',       'submit')

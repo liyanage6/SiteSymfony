@@ -60,8 +60,8 @@ class AdvertController extends Controller
         }
 
         return $this->render('NLPlatformBundle:Advert:edit.html.twig', array(
-            'advert' => $advert,
             'form' => $form->createView(),
+            'advert' => $advert,
         ));
     }
 
@@ -96,7 +96,6 @@ class AdvertController extends Controller
     public function addAction(Request $request)
     {
         $advert = new Advert();
-
         $advert->setDate(new \Datetime());
 
         $form = $this->createForm(new AdvertType(), $advert);
@@ -104,7 +103,6 @@ class AdvertController extends Controller
         if ($form->handleRequest($request)->isValid())
         {
             $em = $this->getDoctrine()->getManager();
-
             $em->persist($advert);
             $em->flush();
 
