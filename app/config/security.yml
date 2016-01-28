@@ -1,8 +1,8 @@
 security:
 
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
-        NL\UserBundle\Entity\User: plaintext
+        Symfony\Component\Security\Core\User\User: plaintext #Tjrs utile ou non A TEST
+        NL\UserBundle\Entity\User: sha512
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
@@ -10,9 +10,7 @@ security:
 
     providers:
         main:
-            entity:
-                class:    NL\UserBundle\Entity\User
-                property: username
+            id: fos_user.user_provider.username
 
     firewalls:
         dev:
@@ -24,11 +22,13 @@ security:
             anonymous: true
             provider: main
             form_login:
-                login_path: login
-                check_path: login_check
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
             logout:
-                path: logout
-                target: /platform
+                path: fos_user_security_logout
+                target: /
+            remember_me:
+                key:    %secret% # un parametre defini dans parmaters.yml
 
-    access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#    access_control:
+#        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

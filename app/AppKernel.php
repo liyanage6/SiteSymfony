@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new NL\PlatformBundle\NLPlatformBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new NL\UserBundle\NLUserBundle(),
+            new \FOS\UserBundle\FOSUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
