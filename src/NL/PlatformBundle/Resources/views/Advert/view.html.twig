@@ -9,7 +9,7 @@
 {% block nlplatform_body %}
 
     {% if advert.image is not null %}
-        <img src="{{ asset(advert.image.webPath) }}" alt="{{ advert.image.alt }}">
+        <img style="width: 250px; height: 250px;" src="{{ asset(advert.image.webPath) }}" alt="{{ advert.image.alt }}">
     {% endif %}
 
     <h2>{{ advert.title }}</h2>
